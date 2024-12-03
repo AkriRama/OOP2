@@ -4,22 +4,26 @@ import java.util.Scanner;
 
 public class OOPTask {
     // Products Array
-    static String[] listItems = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-    static int[] listStockItems = { 10, 9, 5, 4, 7 };
-    static Float[] listPriceItems = { 10000f, 20000f, 30000f, 25000f, 55000f };
+    static String[] listItems = new String[100];
+    static int[] listStockItems = new int[100];
+    static Float[] listPriceItems = new Float[100];
 
     // PaymentMethods Array
     static String[] listPaymentMethods = { "cash", "bank transfer", "e-wallet" };
     static Float[] listFeePaymentMethods = { 2f, 1.5f, 3f };
 
     // MENU ARRAY
-    static String[] listMenus = { "SEE PRODUCTS", "DO TRANSACTIONS", "HISTORY TRANSACTION", "EXIT OR LOGOUT" };
+    static String[] listMenus = { "SEE USERS", "SEE PAYMENT METHODS", "SEE ", "SEE PRODUCTS", "DO TRANSACTIONS",
+            "HISTORY TRANSACTION",
+            "HISTORY TRANSACTION DETAIL", "EXIT OR LOGOUT" };
 
     // USER ARRAY
     static String[] listUsers = { "Fahri", "Rizal", "Adi", "Rani", "Ridwan" };
     static String[] listPasswords = { "Fahri", "Rizal", "Adi", "Rani", "Ridwan" };
+    static String[] listRoles = { "admin", "user", "user", "user", "user" };
 
     static Scanner in = new Scanner(System.in);
+    static String userF;
 
     public static void main(String[] args) {
         loginProccess();
@@ -29,17 +33,19 @@ public class OOPTask {
         User user = new User();
         user.setName(listUsers);
         user.setPassword(listPasswords);
+        user.setRole(listRoles);
 
         boolean isValid = false;
         while (!isValid) {
             System.out.print("Masukkan Username : ");
-            String userF = in.nextLine();
+            userF = in.nextLine();
+            user.setUserF(userF);
             System.out.print("Masukkan Password : ");
             String passwordF = in.nextLine();
 
-            if (user.isValidUser(userF, passwordF)) {
+            if (user.isValid(passwordF)) {
                 System.out.println("Login Success. Hi, user " + userF);
-                displayMenu();
+                displayMenu(user);
             } else {
                 System.out.println("Username or Password is Invalid. Please, try again!!!");
             }
@@ -47,9 +53,40 @@ public class OOPTask {
 
     }
 
-    public static void displayMenu() {
-        String[][] listTransaction = new String[50][7];
-        String[][] listDetailTransaction = new String[50][5];
+    public static void itemIn() {
+        listItems[0] = "Item 1";
+        listItems[1] = "Item 2";
+        listItems[2] = "Item 3";
+        listItems[3] = "Item 4";
+        listItems[4] = "Item 4";
+
+        listStockItems[0] = 10;
+        listStockItems[1] = 9;
+        listStockItems[2] = 5;
+        listStockItems[3] = 4;
+        listStockItems[4] = 7;
+
+        listPriceItems[0] = 10000f;
+        listPriceItems[1] = 20000f;
+        listPriceItems[2] = 30000f;
+        listPriceItems[3] = 25000f;
+        listPriceItems[4] = 55000f;
+    }
+
+    // METHOD VOID DISPLAY MENU
+    public static void displayMenu(User user) {
+        itemIn();
+        Product product = new Product();
+        product.setName(listItems);
+        product.setStock(listStockItems);
+        product.setPrice(listPriceItems);
+
+        Transaction transaction = new Transaction();
+        TransactionDetail transactionDetail = new TransactionDetail();
+        PaymentMethod paymentMethods = new PaymentMethod();
+
+        paymentMethods.setName(listPaymentMethods);
+        paymentMethods.setFee(listFeePaymentMethods);
 
         int n = 1;
         int menu;
@@ -70,20 +107,25 @@ public class OOPTask {
 
             switch (menu) {
                 case 1:
-                    Product product = new Product();
                     product.display("Product");
+                    if (user.isValid()) {
+                        displayManage(product);
+                    }
                     hasMenu = backToMenu();
                     break;
                 case 2:
-                    // displayProccessTransaction(listTransaction, listDetailTransaction);
+                    displayProccessTransaction(user, product, transaction, transactionDetail, paymentMethods);
                     hasMenu = backToMenu();
                     break;
                 case 3:
-                    // displayTransaction(listTransaction);
+                    transaction.display("Transaction", paymentMethods);
+                    hasMenu = backToMenu();
+                    break;
+                case 4:
+                    transactionDetail.display("Transaction Detail");
                     hasMenu = backToMenu();
                     break;
                 case 0:
-                    // System.exit(0);
                     hasMenu = false;
                     break;
                 default:
@@ -94,6 +136,7 @@ public class OOPTask {
         }
     }
 
+    // METHOD BACK TO MENU
     public static boolean backToMenu() {
         System.out.print("Input '0' to back to menu : ");
         int input = Integer.valueOf(in.nextLine());
@@ -103,9 +146,10 @@ public class OOPTask {
         return false;
     }
 
-    public static void displayProccessTransaction(Product product, PaymentMethod paymentMethods) {
-        Transaction transaction = new Transaction();
-        TransactionDetail transactionDetail = new TransactionDetail();
+    // METHOD VOID DISPLAY PROCESS TRANSACTION
+    public static void displayProccessTransaction(User user, Product product, Transaction transaction,
+            TransactionDetail transactionDetail, PaymentMethod paymentMethods) {
+
         product.display("Product");
 
         System.out.print("Input all total product want to buy : ");
@@ -114,41 +158,46 @@ public class OOPTask {
         // FROM USER INPUT
         String[] itemBuy = new String[totalProduct];
         int[] quantity = new int[totalProduct];
-        float[] totalPriceItem = new float[itemBuy.length];
+        // Float[] totalPriceItem = new Float[itemBuy.length];
         inputItem(itemBuy, quantity, totalProduct);
-        for (int i = 0; i < itemBuy.length; i++) {
-            if (!isAvailable(itemBuy[i], quantity[i])) {
-                itemBuy[i] = "";
-                quantity[i] = 0;
-            }
-            quantity[i] = getReplace(itemBuy[i], quantity[i]);
-        }
+        // for (int i = 0; i < itemBuy.length; i++) {
+        // if (!isAvailable(itemBuy[i], quantity[i])) {
+        // itemBuy[i] = "";
+        // quantity[i] = 0;
+        // }
+        // quantity[i] = getReplace(itemBuy[i], quantity[i]);
+        // }
 
         paymentMethods.display("Payment Method");
         System.out.print("Input Payment Method : ");
         int paymentMethod = Integer.valueOf(in.nextLine());
 
-        float totalTransaction = sumTotalTransaction(totalPriceItem);
-        float fee = listFeePaymentMethods[(paymentMethod - 1)];
-        float totalFee = sumTotalFee(totalTransaction, fee);
-        float totalTransactionWithFee = sumTotalTransactionWithFee(totalTransaction,
-                totalFee);
+        // float totalTransaction = sumTotalTransaction(totalPriceItem);
+        float fee = paymentMethods.getFee()[(paymentMethod - 1)];
 
-        transaction.addTransaction(paymentMethod - 1,
-                2,
-                totalTransaction, fee, totalFee,
-                totalTransactionWithFee);
-        transactionDetail.addTransactionDetail(getIndex(listUsers, user),
-                itemBuy, quantity, totalPriceItem,
-                getIndexNotNull(listTransaction));
+        transaction.addTransaction(paymentMethod - 1, 2);
+        transactionDetail.countTotalPriceItem(itemBuy, quantity, product);
+        transactionDetail.addTransactionDetail(user.getIndex(),
+                itemBuy, quantity, transaction.getIndex());
+        transaction.updateTotalTransaction(fee, transactionDetail);
 
-        displayDetailTransaction(user, listPaymentMethods[paymentMethod - 1],
-                itemBuy, quantity,
-                totalPriceItem,
-                totalTransaction, fee, totalFee, totalTransactionWithFee,
-                listPaymentStatus[2]);
+        transaction.display(transaction, transactionDetail, paymentMethods, product,
+                "Completed", userF,
+                transaction.getIndex());
+
+        // Transaction transaction, TransactionDetail transactionDetail, PaymentMethod
+        // paymentMethod,
+        // Product product,
+        // String paymentStatus, String userF, int transactionId
+
+        // displayDetailTransaction(user, listPaymentMethods[paymentMethod - 1],
+        // itemBuy, quantity,
+        // totalPriceItem,
+        // totalTransaction, fee, totalFee, totalTransactionWithFee,
+        // listPaymentStatus[2]);
     }
 
+    // METHOD VOID INPUT ITEM
     public static void inputItem(String[] itemBuy, int[] quantity, int totalProduct) {
         boolean isFinish = false;
         int n = 0;
@@ -172,5 +221,36 @@ public class OOPTask {
                 n++;
             }
         }
+    }
+
+    public static void displayManage(Product product) {
+        boolean isValidNumber = false;
+        while (!isValidNumber) {
+            System.out.print("Input '0' to 'Back To Menu' or '1' to 'Add' Product (Max : " + product.getIndex() + "/"
+                    + product.getName().length + ")" + " : ");
+            int i = Integer.valueOf(in.nextLine());
+            switch (i) {
+                case 1:
+                    inputProduct(product, 3);
+                    break;
+                case 0:
+                    isValidNumber = true;
+                    break;
+                default:
+                    System.out.println("Invalid Input!!!. Try Again!");
+                    break;
+            }
+        }
+    }
+
+    public static void inputProduct(Product product, int n) {
+        System.out.print("Input Item's name : ");
+        String name = in.nextLine();
+        System.out.print("Input Item's stock : ");
+        int stock = Integer.valueOf(in.nextLine());
+        System.out.print("Input Item's price : ");
+        Float price = Float.parseFloat(in.nextLine());
+
+        product.addProduct(name, stock, price);
     }
 }
