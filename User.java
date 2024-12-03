@@ -1,27 +1,27 @@
 package day5.Tugas;
 
-public class User extends ParentTransaction {
+import day5.Tugas.repository.IndexInterface;
+
+public class User extends Transactions implements IndexInterface {
+    private String[] name;
     private String[] password;
     private String[] role;
+    private String userF;
 
-    @Override
-    public int[] getId() {
-        return super.getId();
-    }
-
-    @Override
     public String[] getName() {
-        return super.getName();
+        return name;
     }
 
-    @Override
-    public void setId(int[] id) {
-        super.setId(id);
-    }
-
-    @Override
     public void setName(String[] name) {
-        super.setName(name);
+        this.name = name;
+    }
+
+    public String[] getPassword() {
+        return password;
+    }
+
+    public void setPassword(String[] password) {
+        this.password = password;
     }
 
     public String[] getRole() {
@@ -32,7 +32,16 @@ public class User extends ParentTransaction {
         this.role = role;
     }
 
-    public boolean isValidUser(String userF, String passwordF) {
+    public String getUserF() {
+        return userF;
+    }
+
+    public void setUserF(String userF) {
+        this.userF = userF;
+    }
+
+    // METHOD BOOLEAN TO FIND VALID USER (ADMIN AND USER)
+    public boolean isValid(String passwordF) {
         for (int i = 0; i < getName().length; i++) {
             if (getName()[i].equalsIgnoreCase(userF) && this.password[i].equalsIgnoreCase(passwordF)) {
                 return true;
@@ -41,18 +50,26 @@ public class User extends ParentTransaction {
         return false;
     }
 
-    public void setPassword(String[] password) {
-        this.password = password;
+    // METHOD BOOLEAN TO FIND VALID ADMIN
+    public boolean isValid() {
+        for (int i = 0; i < getName().length; i++) {
+            if (getName()[i].equalsIgnoreCase(userF) && getRole()[i].equalsIgnoreCase("Admin")) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public int getIndex(String find) {
+    @Override
+    public int getIndex() {
         int n = 0;
         for (String i : getName()) {
-            if (i.equalsIgnoreCase(find)) {
+            if (i.equalsIgnoreCase(getUserF())) {
                 return n;
             }
             n++;
         }
         return 0;
     }
+
 }
