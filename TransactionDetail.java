@@ -1,34 +1,18 @@
 package day5.Tugas;
 
-public class TransactionDetail {
-    private String[][] transactionDetail;
-    private User[] user;
-    private String[] itemName;
-    private int[] quantity;
+import day5.Tugas.repository.IndexInterface;
+import day5.Tugas.utils.FormatCurrency;
+
+public class TransactionDetail extends Transactions implements IndexInterface {
+    private String[][] transactionDetail = new String[50][5];
     private Float[] totalPriceItem;
 
-    public User[] getUser() {
-        return user;
+    public String[][] getTransactionDetail() {
+        return transactionDetail;
     }
 
-    public void setUser(User[] user) {
-        this.user = user;
-    }
-
-    public String[] getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String[] itemName) {
-        this.itemName = itemName;
-    }
-
-    public int[] getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int[] quantity) {
-        this.quantity = quantity;
+    public void setTransactionDetail(String[][] transactionDetail) {
+        this.transactionDetail = transactionDetail;
     }
 
     public Float[] getTotalPriceItem() {
@@ -39,9 +23,8 @@ public class TransactionDetail {
         this.totalPriceItem = totalPriceItem;
     }
 
-    public void countTotalPriceItem(String[] itemBuy, int[] quantity) {
+    public void countTotalPriceItem(String[] itemBuy, int[] quantity, Product product) {
         Float[] total = new Float[itemBuy.length];
-        Product product = new Product();
 
         for (int i = 0; i < itemBuy.length; i++) {
             for (int j = 0; j < product.getName().length; j++) {
@@ -54,25 +37,51 @@ public class TransactionDetail {
     }
 
     public void addTransactionDetail(int userId, String[] itemBuy,
-            int[] quantity, float[] totalPriceItem, int transactionId) {
+            int[] quantity, int transactionId) {
+        String[][] listTransactionDetail = getTransactionDetail();
+        int transactionLength = getIndex() + itemBuy.length;
 
-        for (int i = 0; i < itemBuy.length; i++) {
-            for (int j = 0; j < itemBuy.length; j++) {
-                transactionDetail[i][0] = String.valueOf(userId);
-                transactionDetail[i][1] = itemBuy[j];
-                transactionDetail[i][2] = String.valueOf(quantity[j]);
-                transactionDetail[i][3] = String.valueOf(totalPriceItem[j]);
-                transactionDetail[i][4] = String.valueOf(transactionId);
+        int j = 0;
+        for (int i = getIndex(); i < transactionLength; i++) {
+            listTransactionDetail[i][0] = String.valueOf(userId);
+            listTransactionDetail[i][1] = itemBuy[j];
+            listTransactionDetail[i][2] = String.valueOf(quantity[j]);
+            listTransactionDetail[i][3] = String.valueOf(getTotalPriceItem()[j]);
+            listTransactionDetail[i][4] = String.valueOf(transactionId);
+            j++;
+        }
+        this.transactionDetail = listTransactionDetail;
+    }
+
+    @Override
+    public int getIndex() {
+        int n = 0;
+        for (String[] list : getTransactionDetail()) {
+            for (String i : list) {
+                if (i == null) {
+                    return n;
+                }
+            }
+            n++;
+        }
+        return 1;
+    }
+
+    public void display(String name) {
+        super.display(name);
+        if (getIndex() == 0) {
+            System.out.println("NO TRANSACTION DETAIL HISTORY");
+        } else {
+            System.out.println("Transaction ID\tName\t\tQuantity\tTotal Price Item");
+            for (int i = 0; i < getIndex(); i++) {
+                System.out.println(
+                        getTransactionDetail()[i][4] + "\t\t"
+                                + getTransactionDetail()[i][1]
+                                + "\t\t"
+                                + getTransactionDetail()[i][2] + "\t\t" +
+                                FormatCurrency.setFormatCurrency(Float.parseFloat(getTransactionDetail()[i][3])));
             }
         }
-    }
-
-    public String[][] getTransactionDetail() {
-        return transactionDetail;
-    }
-
-    public void setTransactionDetail(String[][] transactionDetail) {
-        this.transactionDetail = transactionDetail;
     }
 
 }
