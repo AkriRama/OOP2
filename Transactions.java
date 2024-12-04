@@ -11,7 +11,4 @@ public abstract class Transactions {
         this.id = id;
     }
 
-    public void display(String name) {
-        System.out.println("=== List " + name + " ===");
-    }
 }
