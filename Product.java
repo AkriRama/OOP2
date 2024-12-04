@@ -32,8 +32,9 @@ public class Product extends Transactions implements IndexInterface {
         this.price = price;
     }
 
-    public void display(String name) {
-        super.display(name);
+    public void display() {
+        System.out.println("=== List Product ===");
+
         if (getIndex() > 0) {
             System.out.println("Name\t\tStock\tPrice");
             for (int i = 0; i < getName().length; i++) {
