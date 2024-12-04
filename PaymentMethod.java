@@ -20,8 +20,9 @@ public class PaymentMethod extends Transactions {
         this.fee = fee;
     }
 
-    public void display(String name) {
-        super.display(name);
+    public void display() {
+        System.out.println("=== List Payment Method ===");
+
         System.out.println("No\tTransation Fee\t\tName");
         for (int i = 0; i < getName().length; i++) {
             System.out.println(
