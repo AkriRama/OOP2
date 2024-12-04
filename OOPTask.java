@@ -13,7 +13,7 @@ public class OOPTask {
     static Float[] listFeePaymentMethods = { 2f, 1.5f, 3f };
 
     // MENU ARRAY
-    static String[] listMenus = { "SEE USERS", "SEE PAYMENT METHODS", "SEE ", "SEE PRODUCTS", "DO TRANSACTIONS",
+    static String[] listMenus = { "SEE PRODUCTS", "DO TRANSACTIONS",
             "HISTORY TRANSACTION",
             "HISTORY TRANSACTION DETAIL", "EXIT OR LOGOUT" };
 
@@ -107,7 +107,7 @@ public class OOPTask {
 
             switch (menu) {
                 case 1:
-                    product.display("Product");
+                    product.display();
                     if (user.isValid()) {
                         displayManage(product);
                     }
@@ -118,11 +118,11 @@ public class OOPTask {
                     hasMenu = backToMenu();
                     break;
                 case 3:
-                    transaction.display("Transaction", paymentMethods);
+                    transaction.display(paymentMethods);
                     hasMenu = backToMenu();
                     break;
                 case 4:
-                    transactionDetail.display("Transaction Detail");
+                    transactionDetail.display();
                     hasMenu = backToMenu();
                     break;
                 case 0:
@@ -150,7 +150,7 @@ public class OOPTask {
     public static void displayProccessTransaction(User user, Product product, Transaction transaction,
             TransactionDetail transactionDetail, PaymentMethod paymentMethods) {
 
-        product.display("Product");
+        product.display();
 
         System.out.print("Input all total product want to buy : ");
         int totalProduct = Integer.valueOf(in.nextLine());
@@ -158,21 +158,12 @@ public class OOPTask {
         // FROM USER INPUT
         String[] itemBuy = new String[totalProduct];
         int[] quantity = new int[totalProduct];
-        // Float[] totalPriceItem = new Float[itemBuy.length];
         inputItem(itemBuy, quantity, totalProduct);
-        // for (int i = 0; i < itemBuy.length; i++) {
-        // if (!isAvailable(itemBuy[i], quantity[i])) {
-        // itemBuy[i] = "";
-        // quantity[i] = 0;
-        // }
-        // quantity[i] = getReplace(itemBuy[i], quantity[i]);
-        // }
 
-        paymentMethods.display("Payment Method");
+        paymentMethods.display();
         System.out.print("Input Payment Method : ");
         int paymentMethod = Integer.valueOf(in.nextLine());
 
-        // float totalTransaction = sumTotalTransaction(totalPriceItem);
         float fee = paymentMethods.getFee()[(paymentMethod - 1)];
 
         transaction.addTransaction(paymentMethod - 1, 2);
@@ -184,17 +175,6 @@ public class OOPTask {
         transaction.display(transaction, transactionDetail, paymentMethods, product,
                 "Completed", userF,
                 transaction.getIndex());
-
-        // Transaction transaction, TransactionDetail transactionDetail, PaymentMethod
-        // paymentMethod,
-        // Product product,
-        // String paymentStatus, String userF, int transactionId
-
-        // displayDetailTransaction(user, listPaymentMethods[paymentMethod - 1],
-        // itemBuy, quantity,
-        // totalPriceItem,
-        // totalTransaction, fee, totalFee, totalTransactionWithFee,
-        // listPaymentStatus[2]);
     }
 
     // METHOD VOID INPUT ITEM
@@ -254,3 +234,24 @@ public class OOPTask {
         product.addProduct(name, stock, price);
     }
 }
+
+// TASK OBJECT ORIENTED PROGRAMMING
+// gunakan fitur transaksi dari use case yg sudah dibuat pada tugas sebelumnya
+// transformasikan code program dari fitur use case yang sudah dibuat dengan
+// menggunakan OOP
+
+// wajib menggunakan Class & Object - (DONE) - CREATE ALL METHOD AS CLASS AND
+// CREATE OBJECT IN MAIN
+// wajib menggunakan Inheritance - (DONE) - (Transactions As Parent Class)
+// wajib menggunakan Polimorphism (boleh pilih antara Override / Overload) -
+// (DONE) - SUM TOTAL IN TRANSACTION CLASS (OVERLOAD)
+// wajib menggunakan Encapsulation -(DONE) - GETTER & SETTER IN EVERY CLASS
+// wajib menggunakan Abstraction (boleh pilih antara Partial / Full) - (DONE) -
+// INTERFACE IN GET INDEX (IndexInterface Class)
+
+// Inheritance untuk bagian id dan name dipending terlebih dahulu - (DONE)
+// Inheritance hanya id
+// Polimorfisme(Overiding) diberikan contoh lain - (DONE) overriding tidak
+// diterapkan hanya overloading
+// Getter Setter di Child Class - (DONE) Getter Setter inheritance hanya ada di
+// parent class
