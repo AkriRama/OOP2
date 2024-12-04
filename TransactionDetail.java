@@ -67,8 +67,8 @@ public class TransactionDetail extends Transactions implements IndexInterface {
         return 1;
     }
 
-    public void display(String name) {
-        super.display(name);
+    public void display() {
+        System.out.println("=== List Transaction Detail ===");
         if (getIndex() == 0) {
             System.out.println("NO TRANSACTION DETAIL HISTORY");
         } else {
