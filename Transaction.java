@@ -75,8 +75,8 @@ public class Transaction extends Transactions implements IndexInterface {
         this.transaction = listTransaction;
     }
 
-    public void display(String name, PaymentMethod paymentMethods) {
-        super.display(name);
+    public void display(PaymentMethod paymentMethods) {
+        System.out.println("=== List Transaction ===");
 
         if (getIndex() == 0) {
             System.out.println("NO TRANSACTION HISTORY");
