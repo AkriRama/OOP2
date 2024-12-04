@@ -234,24 +234,3 @@ public class OOPTask {
         product.addProduct(name, stock, price);
     }
 }
-
-// TASK OBJECT ORIENTED PROGRAMMING
-// gunakan fitur transaksi dari use case yg sudah dibuat pada tugas sebelumnya
-// transformasikan code program dari fitur use case yang sudah dibuat dengan
-// menggunakan OOP
-
-// wajib menggunakan Class & Object - (DONE) - CREATE ALL METHOD AS CLASS AND
-// CREATE OBJECT IN MAIN
-// wajib menggunakan Inheritance - (DONE) - (Transactions As Parent Class)
-// wajib menggunakan Polimorphism (boleh pilih antara Override / Overload) -
-// (DONE) - SUM TOTAL IN TRANSACTION CLASS (OVERLOAD)
-// wajib menggunakan Encapsulation -(DONE) - GETTER & SETTER IN EVERY CLASS
-// wajib menggunakan Abstraction (boleh pilih antara Partial / Full) - (DONE) -
-// INTERFACE IN GET INDEX (IndexInterface Class)
-
-// Inheritance untuk bagian id dan name dipending terlebih dahulu - (DONE)
-// Inheritance hanya id
-// Polimorfisme(Overiding) diberikan contoh lain - (DONE) overriding tidak
-// diterapkan hanya overloading
-// Getter Setter di Child Class - (DONE) Getter Setter inheritance hanya ada di
-// parent class
